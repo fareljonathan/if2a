@@ -18,6 +18,7 @@
                     <td> {{ $item->nama_fakultas }} </td>
                     <td> {{ $item->singkatan }} </td>
                     <td>
+                        <a href="{{route('fakultas.edit', $item->id)}}" class="btn btn-warning btn-rounded">Ubah</a>
                         <form method="POST" action="{{ route('fakultas.destroy', $item->id) }}">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
