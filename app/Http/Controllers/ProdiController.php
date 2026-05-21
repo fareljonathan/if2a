@@ -59,7 +59,10 @@ class ProdiController extends Controller
      */
     public function edit(Prodi $prodi)
     {
-        //
+        $prodi = Prodi::find($prodi);
+        //cari data berdasarkan id
+
+        return view('prodi.edit', compact('prodi'));
     }
 
     /**
@@ -67,7 +70,16 @@ class ProdiController extends Controller
      */
     public function update(Request $request, Prodi $prodi)
     {
-        //
+        $input = $request->validate([
+        'tahun_akademik' =>
+            'required|unique:periodes,tahun_akademik,' . $prodi->id . ',id',
+
+        'semester' => 'required'
+    ]);
+
+    $prodi->update($input);
+
+    return redirect('/periode');
     }
 
     /**

@@ -67,16 +67,16 @@ class PeriodeController extends Controller
      */
     public function update(Request $request, Periode $periode)
     {
-        $input = $request->validate([
-            'tahun_akademik' => 'required|unique:periode,tahun_akademik,' . $periode,
-            'semester' => 'required'
-        ]);
+       $input = $request->validate([
+        'tahun_akademik' =>
+            'required|unique:periodes,tahun_akademik,' . $periode->id . ',id',
 
-        // simpan data ke tabel fakultas
-       Periode::where('id', $periode)->update($input);
+        'semester' => 'required'
+    ]);
 
-        // redirect ke route fakultas.index
-        return redirect()->route('periode.index');
+    $periode->update($input);
+
+    return redirect('/periode');
     }
 
     /**
@@ -84,6 +84,7 @@ class PeriodeController extends Controller
      */
     public function destroy(Periode $periode)
     {
-        //
+        $periode->delete(); // hapus data fakultas
+        return redirect()->route('periode.index');
     }
 }
