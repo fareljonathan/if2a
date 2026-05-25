@@ -31,10 +31,17 @@
         @enderror
 
         <div class="form-group">
-            <label for="">Semester</label>
-            <input type="text" name="fakultas_id" class="form-control" value="{{ old('fakultas_id') ?? $prodi->fakultas_id }}">
+            <label for="">Fakultas</label>
+            <select name="fakultas_id" class="form-control">
+                <option value="">Pilih Fakultas</option>
+                @foreach($fakultas as $row)
+                    <option value="{{ $row->id }}" {{ old('fakultas_id') == $row->id ? 'selected' : '' }}>
+                        {{ $row->nama_fakultas }}
+                    </option>
+                @endforeach
+            </select>
         </div>
-        @error('semester')
+        @error('fakultas_id')
             <div class="text-danger"> {{ $message }} </div>
         @enderror
 
