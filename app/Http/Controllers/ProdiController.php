@@ -88,6 +88,7 @@ class ProdiController extends Controller
      */
     public function destroy(Prodi $prodi)
     {
-        //
+        $prodi->delete(); // hapus data prodi
+        return redirect()->route('prodi.index');
     }
 }

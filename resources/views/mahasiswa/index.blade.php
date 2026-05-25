@@ -34,7 +34,7 @@
         </td>
         <td>
             <a href="{{route('mahasiswa.edit', $mhs->id)}}" class="btn btn-warning btn-rounded">Ubah</a>
-                        <form method="POST" action="{{ route('mahasiswa.destroy', $mhs->id) }}">
+                        <form method="POST" action="{{ route('mahasiswa.destroy', $mhs->id) }}" class="d-inline">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="btn btn-xs btn-danger btn-rounded show_confirm"
