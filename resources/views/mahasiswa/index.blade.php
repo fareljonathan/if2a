@@ -3,7 +3,8 @@
 @section('title', 'Mahasiswa')
 
 @section('content')
-<a href="{{ route('mahasiswa.create') }}" class="btn btn-primary">Tambah Mahasiswa</a>
+<a href="{{ route('mahasiswa.create') }}" class="btn btn-primary mb-2">Tambah Mahasiswa</a>
+
 <table class="table table-bordered">
     <tr>
         <th>No</th>
@@ -21,29 +22,33 @@
         <td>{{ $mhs->npm }}</td>
         <td>
             @if ($mhs->foto)
-                <img src="{{ asset('storage/fotos/' . $mhs->foto) }}" alt="Foto"
-                width="100">
-            @else 
+            <img src="{{ asset('storage/fotos/' . $mhs->foto) }}" alt="Foto" width="100">
+             @else 
                 <p>Foto Tidak Tersedia</p>
-            @endIf
-        
+            @endif
         </td>   
+
         <td>{{ $mhs->prodi->nama_prodi ?? '-' }}</td>
+
         <td>
-            <a href="{{ route('mahasiswa.edit', $mhs->id) }}" class="btn btn-smbtn-warning">Edit</a>
+            <a href="{{ route('mahasiswa.edit', $mhs->id) }}" class="btn btn-warning btn-sm">
+                Edit
+            </a>
+
+            <form method="POST" action="{{ route('mahasiswa.destroy', $mhs->id) }}" class="d-inline">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="btn btn-danger btn-sm show_confirm"
+                        data-toggle="tooltip"
+                        title="Delete"
+                        data-nama="{{ $mhs->nama }}">
+                    Hapus
+                </button>
+            </form>
         </td>
-        <td>
-            <a href="{{route('mahasiswa.edit', $mhs->id)}}" class="btn btn-warning btn-rounded">Ubah</a>
-                        <form method="POST" action="{{ route('mahasiswa.destroy', $mhs->id) }}" class="d-inline">
-                            @csrf
-                            <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-xs btn-danger btn-rounded show_confirm"
-                                data-toggle="tooltip" title='Delete'
-                                data-nama='{{ $mhs->nama }}'>Hapus</button>
-        </td>
-        
     </tr>
     @endforeach
-
 </table>
 @endsection

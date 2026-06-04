@@ -12,6 +12,7 @@
         <th>Kaprodi</th>
         <th>Fakultas</th>
         <th>Singkatan</th>
+        <th>Aksi</th>
     </tr>
 
     @foreach($prodis as $key => $prodi)

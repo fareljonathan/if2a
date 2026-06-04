@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
@@ -67,7 +68,8 @@ class MahasiswaController extends Controller
      */
     public function edit(Mahasiswa $mahasiswa)
     {
-        //
+        $prodi = Prodi::all();
+        return view('mahasiswa.edit', compact('mahasiswa', 'prodi'));
     }
 
     /**
@@ -75,7 +77,39 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, Mahasiswa $mahasiswa)
     {
-        
+        $request->validate([
+        'nama' => 'required',
+        'npm' => 'required|unique:mahasiswas,npm,' . $mahasiswa->id,
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'prodi_id' => 'required',
+    ]);
+
+    $data = [
+        'nama' => $request->nama,
+        'npm' => $request->npm,
+        'prodi_id' => $request->prodi_id,
+    ];
+
+    if ($request->hasFile('foto')) {
+        // hapus foto lama jika ada
+        if ($mahasiswa->foto && Storage::disk('public')->exists('fotos/' . $mahasiswa->foto)) {
+            Storage::disk('public')->delete('fotos/' . $mahasiswa->foto);
+        }
+
+        // simpan foto baru
+        $file = $request->file('foto');
+        $namaFoto = time() . '_' . $file->getClientOriginalName();
+
+        $file->storeAs('fotos', $namaFoto, 'public');
+
+        // simpan nama file ke database
+        $data['foto'] = $namaFoto;
+    }
+
+    $mahasiswa->update($data);
+
+    return redirect()->route('mahasiswa.index')
+        ->with('success', 'Data mahasiswa berhasil diubah');
     }
 
     /**
@@ -83,6 +117,13 @@ class MahasiswaController extends Controller
      */
     public function destroy(Mahasiswa $mahasiswa)
     {
-        //
+        if ($mahasiswa->foto && Storage::disk('public')->exists('fotos/' . $mahasiswa->foto)) {
+        Storage::disk('public')->delete('fotos/' . $mahasiswa->foto);
+    }
+
+    $mahasiswa->delete();
+
+    return redirect()->route('mahasiswa.index')
+        ->with('success', 'Data mahasiswa berhasil dihapus');
     }
 }

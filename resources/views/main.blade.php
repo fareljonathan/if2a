@@ -269,9 +269,15 @@
                 <!--end::Menu Body-->
                 <!--begin::Menu Footer-->
                 <li class="user-footer">
-                  <a href="#" class="btn btn-outline-secondary">Profile</a>
-                  <a href="#" class="btn btn-outline-danger float-end">Sign out</a>
-                </li>
+          <a href="#" class="btn btn-outline-secondary">Profile</a>
+
+  <form method="POST" action="{{ route('logout') }}" class="float-end">
+    @csrf
+    <button type="submit" class="btn btn-outline-danger">
+      Sign out
+    </button>
+  </form>
+</li>
                 <!--end::Menu Footer-->
               </ul>
             </li>
